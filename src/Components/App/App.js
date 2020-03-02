@@ -11,9 +11,9 @@ export default function App() {
   let [guest, setGuest] = useState('');
 
   //>> Constructor for Message
-  function Message(firstName, lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+  function Message(myGuest, myCompany) {
+    this.firstName = myGuest.firstName;
+    this.lastName = myGuest.lastName;
 
     //Generates a greeting based on the time of day
     this.findTime = function() {
@@ -28,11 +28,16 @@ export default function App() {
         return 'Good night'
       }
     }
+
+    this.generateGreeting = function() {
+      
+      return `${this.findTime()} ${this.firstName} ${this.lastName}, and welcome to ${myCompany.company}! Room ${myGuest.reservation.roomNumber} is ready for you.`;
+    }
   }
 
-  function generateGreeting() {
-    let newMessage = new Message('Luke','Peña');
-    console.log(newMessage.findTime());
+  function sendGreeting(myGuest, myCompany) {
+    let newMessage = new Message(myGuest, myCompany);
+    console.log(newMessage.generateGreeting());
   }
 
   function renderCompanyOptions() {
@@ -60,8 +65,10 @@ export default function App() {
         <option disabled value="">Select a Guest</option>
         {renderGuestOptions()}
       </select>
+
+      <input></input>
       
-      <button onClick={generateGreeting}>Generate Greeting</button>
+      <button onClick={()=>sendGreeting(Guests[guest],Companies[company])}>Generate Greeting</button>
     </div>
   );
 }
