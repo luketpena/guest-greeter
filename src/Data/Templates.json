@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Confirm reservation",
+    "text": "Hey, {{firstName}} {{lastName}}, we just met you. And this is crazy. But {{roonNumber}} is your room number. So confirm your reservation maybe?"
+  },
+  {
+    "id": 2,
+    "name": "Room ready",
+    "text": "{{timeGreeting}} {{firstName}}, and welcome to {{company}}! Room {{roomNumber}} is now ready for you. Enjoy your stay, and let us know if you need anything."
+  },
+  {
+    "id": 3,
+    "name": "Confirm times",
+    "text": "{{firstName}}, your reservation in room {{roomNumber}} at {{company}} has been confirm for {{startTimestamp}} to {{endTimestamp}}."
+  }
+]

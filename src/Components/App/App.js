@@ -4,47 +4,39 @@ import './App.css';
 //-----< Data Imports >-----\\
 import Companies from '../../Data/Companies';
 import Guests from '../../Data/Guests';
+import Templates from '../../Data/Templates';
 
 export default function App() {
 
   let [company, setCompany] = useState('');
   let [guest, setGuest] = useState('');
   let [message, setMessage] = useState('');
+  let [templateIndex,setTemplateIndex] = useState(0);
 
   //>> Constructor for Message
   function Greeting(myGuest, myCompany, myMessage) {
+    this.customerId = myGuest.id;
     this.firstName = myGuest.firstName;
     this.lastName = myGuest.lastName;
+
+    this.companyId = myCompany.id;
+    this.company = myCompany.company;
+    
     this.message = myMessage;
-
-    //Generates a greeting based on the time of day
-    this.findTime = function() {
-      let time = new Date().getHours();
-      if (time<12) {
-        return 'Good morning';
-      } else if (time<16) {
-        return 'Good afternoon';
-      } else if (time<19) {
-        return 'Good evening';
-      } else {
-        return 'Good night'
-      }
-    }
-
-    this.generateGreeting = function() {     
-      let text = `${this.findTime()} ${this.firstName} ${this.lastName}, and welcome to ${myCompany.company}! Room ${myGuest.reservation.roomNumber} is ready for you.`;
-      if (myMessage!=='') {
-        text += ` ${this.message}`;
-      } else {
-        text += ` Enjoy your stay!`;
-      }
-      return text;
-    }
   }
 
-  function sendGreeting(myGuest, myCompany, myMessage) {
-    let newGreeting = new Greeting(myGuest, myCompany, myMessage);
-    console.log(newGreeting.generateGreeting());
+  //>> Only returns a greeting based on the time of day
+  function findTime() {
+    let time = new Date().getHours();
+    if (time<12) {
+      return 'Good morning';
+    } else if (time<16) {
+      return 'Good afternoon';
+    } else if (time<19) {
+      return 'Good evening';
+    } else {
+      return 'Good night'
+    }
   }
 
   function renderCompanyOptions() {
@@ -59,9 +51,28 @@ export default function App() {
     });
   }
 
-  function submitGreeting(event) {
+  function generateMessage() {
+    //>> Copy and modify the template
+    let myMessage = Templates[templateIndex].text
+      .replace('{{firstName}}', Guests[guest].firstName)
+      .replace('{{lastName}}', Guests[guest].lastName)
+      .replace('{{company}}', Companies[company].company)
+      .replace('{{roomNumber}}', Guests[guest].reservation.roomNumber)
+      .replace('{{startTimestamp}}', Guests[guest].reservation.startTimestamp)
+      .replace('{{endTimestamp}}', Guests[guest].reservation.endTimestamp)
+      .replace('{{timeGreeting}}',findTime());
+    return myMessage;
+  }
+
+  function submitGreeting(event,templateIndex) {
     event.preventDefault();
-    sendGreeting(Guests[guest],Companies[company], message);
+    
+    
+    
+    const newGreeting = new Greeting(Guests[guest], Companies[company], myMessage);
+    console.log(newGreeting);
+
+    //>> Clear the inputs
     setGuest('');
     setCompany('');
     setMessage('');
@@ -70,8 +81,8 @@ export default function App() {
   return (
     <div className="App">
       <h1>Guest Greeter</h1>
-
-      <form onSubmit={submitGreeting}>
+      
+      <form onSubmit={event=>submitGreeting(event,templateIndex)}>
         <select required value={company} onChange={event=>setCompany(event.target.value)}>
           <option disabled value="">Choose a Company</option>
           {renderCompanyOptions()}
