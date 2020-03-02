@@ -59,23 +59,33 @@ export default function App() {
     });
   }
 
+  function submitGreeting(event) {
+    event.preventDefault();
+    sendGreeting(Guests[guest],Companies[company], message);
+    setGuest('');
+    setCompany('');
+    setMessage('');
+  }
+
   return (
     <div className="App">
       <h1>Guest Greeter</h1>
 
-      <select value={company} onChange={event=>setCompany(event.target.value)}>
-        <option disabled value="">Choose a Company</option>
-        {renderCompanyOptions()}
-      </select>
+      <form onSubmit={submitGreeting}>
+        <select required value={company} onChange={event=>setCompany(event.target.value)}>
+          <option disabled value="">Choose a Company</option>
+          {renderCompanyOptions()}
+        </select>
 
-      <select value={guest} onChange={event=>setGuest(event.target.value)}>
-        <option disabled value="">Select a Guest</option>
-        {renderGuestOptions()}
-      </select>
+        <select required value={guest} onChange={event=>setGuest(event.target.value)}>
+          <option disabled value="">Select a Guest</option>
+          {renderGuestOptions()}
+        </select>
 
-      <input value={message} onChange={event=>setMessage(event.target.value)}/>
-      
-      <button onClick={()=>sendGreeting(Guests[guest],Companies[company], message)}>Generate Greeting</button>
+        <input value={message} onChange={event=>setMessage(event.target.value)} placeholder="Enjoy your stay!"/>
+        
+        <button>Generate Greeting</button>
+      </form>
     </div>
   );
 }
