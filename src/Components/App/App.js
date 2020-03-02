@@ -17,9 +17,9 @@ export default function App() {
       let time = new Date().getHours();
       if (time<12) {
         return 'Good morning';
-      } else if (time<5) {
+      } else if (time<16) {
         return 'Good afternoon';
-      } else if (time<8) {
+      } else if (time<19) {
         return 'Good evening';
       } else {
         return 'Good night'
@@ -29,14 +29,24 @@ export default function App() {
 
   function generateGreeting() {
     let newMessage = new Message('Luke','Peña');
-    newMessage.findTime();
+    console.log(newMessage.findTime());
+  }
+
+  function renderCompanyOptions() {
+   
+    return Companies.map( (item,i)=> {
+      return <option key={i} value={i}>{item.company}</option>
+    });
   }
 
   return (
     <div className="App">
       <h1>Guest Greeter</h1>
-      {JSON.stringify(Companies)}
-      {JSON.stringify(Guests)}
+      <select>
+        <option disabled value=""/>
+        {renderCompanyOptions()}
+      </select>
+      
       <button onClick={generateGreeting}>Generate Greeting</button>
     </div>
   );
