@@ -24,6 +24,10 @@ The edge cases I could see would be if incomplete information was available abou
 
 I focused instead on preventing the application from crashing in the case of missing information.
 
+The guests 'No last name' and 'No reservation' are test data to see how it works with some edge cases.
+
+There is also a company in the Companies.JSON file that is missing a company name, and this is simply not rendered.
+
 ## Future Development
 There are some things I would like to handle better and research further with more time. I used the syntax if templates with the {{firstName}} entries, but didn't use them properly. I would want to either find a cleaner solution elsewhere or find a way to use that syntax properly instead of just finding and replacing. (Works fine, just not what I want to do.)
 
