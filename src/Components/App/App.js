@@ -98,7 +98,6 @@ export default function App() {
     }
   }
 
-
   //------< Rendering Option Lists >-----\\
   function renderCompanyOptions() {
     return Companies.map( (item,i)=> {
@@ -181,6 +180,7 @@ export default function App() {
     setMessage('');
   }
 
+  //>> Posts the messages to the list
   function renderMessages() {
     return messageList.map( (item,i)=>{
       return <MessageItem key={i} message={item}/>
