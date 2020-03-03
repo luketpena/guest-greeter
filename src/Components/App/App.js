@@ -66,7 +66,7 @@ let dummyData = [
   {
     guestId: 1,
     companyId: 1,
-    message: 'Hello, world!'
+    message: 'Hello, world! This is some dummy data to have something populated when you start. If you want to start fresh, simply change the messageList to an empty array instead of dummyData'
   }
 ]
 
