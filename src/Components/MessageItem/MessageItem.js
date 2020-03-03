@@ -5,8 +5,10 @@ import Guests from '../../Data/Guests';
 import Companies from '../../Data/Companies';
 
 const Container = styled.div`
-
-  box-shadow: 0 4px 4px 0 rgba(100,150,180,.25);
+  background-color: white;
+  box-shadow: 0 4px 4px 0 rgba(0,0,0,.5);
+  padding: 16px;
+  border-radius: 16px;
 `;
 
 const Header = styled.div`

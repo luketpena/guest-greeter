@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
 import './App.css';
 
 //-----< Data Imports >-----\\
@@ -8,6 +9,58 @@ import Templates from '../../Data/Templates';
 
 //-----< Component Imports >-----\\
 import MessageItem from '../MessageItem/MessageItem';
+
+//-----< Styling >-----\\
+const Container = styled.div`
+  background-color: steelblue;
+  min-height: 100vh;
+
+  h1,h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  form {
+    margin: 0 auto;
+    textarea, button, .input-box {
+      display: block;
+      margin: 8px auto;
+      width: max-content;
+    }
+    select {
+      margin: 0 8px;
+    }
+    textarea {
+      resize: none;
+      width: 500px;
+      height: 250px;
+      padding: 8px;
+      outline: none;
+      border: none;
+      border-radius: 8px;
+    }
+    button {
+      padding: 8px 32px;
+      background: none;
+      border-radius: 32px;
+      border: 1px solid white;
+      color: white;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    button:hover {
+      padding: 8px 48px;
+      background-color: white;
+      color: steelblue;
+    }
+  }
+`;
+
+const MessageBox = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
 
 let dummyData = [
   {
@@ -131,32 +184,38 @@ export default function App() {
 
 
   return (
-    <div className="App">
+    <Container>
       <h1>Guest Greeter</h1>
       
+      
       <form onSubmit={event=>submitGreeting(event,templateIndex)}>
-        <select required value={company} onChange={event=>setCompany(event.target.value)}>
-          <option disabled value="">Choose a Company</option>
-          {renderCompanyOptions()}
-        </select>
 
-        <select required value={guest} onChange={event=>setGuest(event.target.value)}>
-          <option disabled value="">Select a Guest</option>
-          {renderGuestOptions()}
-        </select>
+        <div className="input-box">
+          <select required value={company} onChange={event=>setCompany(event.target.value)}>
+            <option disabled value="">Choose a Company</option>
+            {renderCompanyOptions()}
+          </select>
 
-        <select value={templateIndex} onChange={event=>setTemplateIndex(event.target.value)}>
-          <option disabled value="">Select a Template</option>
-          {renderTemplateOptions()}
-        </select>
+          <select required value={guest} onChange={event=>setGuest(event.target.value)}>
+            <option disabled value="">Select a Guest</option>
+            {renderGuestOptions()}
+          </select>
 
-        <textarea value={message} onChange={event=>setMessage(event.target.value)}/>       
+          <select value={templateIndex} onChange={event=>setTemplateIndex(event.target.value)}>
+            <option disabled value="">Select a Template</option>
+            {renderTemplateOptions()}
+          </select>
+        </div>
+
+        <textarea required value={message} onChange={event=>setMessage(event.target.value)}/>       
         <button>Send Greeting</button>
       </form>
 
       <h2>Message Board</h2>
-      {renderMessages()}
+      <MessageBox>
+        {renderMessages()}
+      </MessageBox>
       
-    </div>
+    </Container>
   );
 }
