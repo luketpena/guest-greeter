@@ -58,5 +58,19 @@
       "startTimestamp": 1486660637,
       "endTimestamp": 1486788273
     }
+  },
+  {
+    "id": 7,
+    "firstName": "No last name",
+    "reservation": {
+      "roomNumber": 394,
+      "startTimestamp": 1486660637,
+      "endTimestamp": 1486788273
+    }
+  },
+  {
+    "id": 8,
+    "firstName": "No",
+    "lastName": "reservation"
   }
 ]

@@ -51,7 +51,7 @@ export default function MessageItem(props) {
   return (
     <Container>
       <Header>
-        <p>From {company} to {firstName} {lastName} - Room {reservation.roomNumber} </p>
+        <p>From {company} to {firstName} {lastName} - Room {(reservation && reservation.roomNumber? reservation.roomNumber : '[no number listed]')} </p>
         <p>Sent on {makeReadableDate(date)}</p>
       </Header>
       <h3>Message:</h3>

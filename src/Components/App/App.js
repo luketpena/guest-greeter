@@ -93,10 +93,8 @@ export default function App() {
       return 'Good morning';
     } else if (time<16) {
       return 'Good afternoon';
-    } else if (time<19) {
-      return 'Good evening';
     } else {
-      return 'Good night'
+      return 'Good evening';
     }
   }
 
@@ -104,7 +102,9 @@ export default function App() {
   //------< Rendering Option Lists >-----\\
   function renderCompanyOptions() {
     return Companies.map( (item,i)=> {
-      return <option key={i} value={i}>{item.company}</option>
+      if (item.company) {
+        return <option key={i} value={i}>{item.company}</option>
+      }
     });
   }
 
@@ -141,19 +141,20 @@ export default function App() {
       //>> Update guest information if a guest has been selected
       if (Guests[guest]) {
 
-        let startDate = new Date(Guests[guest].reservation.startTimestamp * 1000);
-        let endDate = new Date(Guests[guest].reservation.endTimestamp * 1000);
+
+        let startDate = (Guests[guest].reservation && Guests[guest].reservation.startTimestamp? new Date(Guests[guest].reservation.startTimestamp * 1000) : null);
+        let endDate = (Guests[guest].reservation && Guests[guest].reservation.endTimestamp? new Date(Guests[guest].reservation.endTimestamp * 1000) : null);
         
         /*
           I know this isn't exactly how templating works in JS, so I would
           research a more "correct" way to do this in the future.
         */
         myMessage = myMessage
-          .replace('{{firstName}}', Guests[guest].firstName)
-          .replace('{{lastName}}', Guests[guest].lastName)
-          .replace('{{roomNumber}}', Guests[guest].reservation.roomNumber)
-          .replace('{{startTimestamp}}', makeReadableDate(startDate))
-          .replace('{{endTimestamp}}', makeReadableDate(endDate));
+          .replace('{{firstName}}', (Guests[guest].firstName? Guests[guest].firstName : '[no first name]'))
+          .replace('{{lastName}}', (Guests[guest].lastName? Guests[guest].lastName : '[no last name]'))
+          .replace('{{roomNumber}}', (Guests[guest].reservation && Guests[guest].reservation.roomNumber? Guests[guest].reservation.roomNumber : '[no room number]'))
+          .replace('{{startTimestamp}}', (startDate? makeReadableDate(startDate) : '[no start date]'))
+          .replace('{{endTimestamp}}', (endDate? makeReadableDate(endDate) : '[no end date]'));
       }
       //>> Update company information if a company has been selected
       if (Companies[company]) {
