@@ -9,6 +9,14 @@ import Templates from '../../Data/Templates';
 //-----< Component Imports >-----\\
 import MessageItem from '../MessageItem/MessageItem';
 
+let dummyData = [
+  {
+    guestId: 1,
+    companyId: 1,
+    message: 'Hello, world!'
+  }
+]
+
 export default function App() {
 
   //-----< Set Up >-----\\
@@ -16,7 +24,7 @@ export default function App() {
   let [guest, setGuest] = useState('');
   let [templateIndex,setTemplateIndex] = useState('');
   let [message, setMessage] = useState('');
-  let [messageList, setMessageList] = useState([]);
+  let [messageList, setMessageList] = useState(dummyData);
 
   //>> This updates the message in the textarea live as options are selected
   useEffect(()=>{
@@ -63,12 +71,13 @@ export default function App() {
 
   //>> Constructor for Message objects, stored in state[] and rendered to DOM
   function Greeting(myGuest, myCompany, myMessage) {
-    this.customerId = myGuest.id;
-    this.firstName = myGuest.firstName;
-    this.lastName = myGuest.lastName;
+    this.guestId = myGuest.id;
     this.companyId = myCompany.id;
-    this.company = myCompany.company;
     this.message = myMessage;
+  }
+
+  function makeReadableDate(date) {
+    return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`
   }
 
   //>> Generates the message only if a template has been selected
@@ -78,12 +87,16 @@ export default function App() {
       let myMessage = Templates[templateIndex].text.replace('{{timeGreeting}}',findTime());
       //>> Update guest information if a guest has been selected
       if (Guests[guest]) {
+
+        let startDate = new Date(Guests[guest].reservation.startTimestamp * 1000);
+        let endDate = new Date(Guests[guest].reservation.endTimestamp * 1000);
+        
         myMessage = myMessage
           .replace('{{firstName}}', Guests[guest].firstName)
           .replace('{{lastName}}', Guests[guest].lastName)
           .replace('{{roomNumber}}', Guests[guest].reservation.roomNumber)
-          .replace('{{startTimestamp}}', Guests[guest].reservation.startTimestamp)
-          .replace('{{endTimestamp}}', Guests[guest].reservation.endTimestamp);
+          .replace('{{startTimestamp}}', makeReadableDate(startDate))
+          .replace('{{endTimestamp}}', makeReadableDate(endDate));
       }
       //>> Update company information if a company has been selected
       if (Companies[company]) {
