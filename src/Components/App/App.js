@@ -6,28 +6,24 @@ import Companies from '../../Data/Companies';
 import Guests from '../../Data/Guests';
 import Templates from '../../Data/Templates';
 
+//-----< Component Imports >-----\\
+import MessageItem from '../MessageItem/MessageItem';
+
 export default function App() {
 
+  //-----< Set Up >-----\\
   let [company, setCompany] = useState('');
   let [guest, setGuest] = useState('');
   let [templateIndex,setTemplateIndex] = useState('');
   let [message, setMessage] = useState('');
+  let [messageList, setMessageList] = useState([]);
 
+  //>> This updates the message in the textarea live as options are selected
   useEffect(()=>{
     generateMessage()
   },[company, guest, templateIndex]);
 
-  //>> Constructor for Message
-  function Greeting(myGuest, myCompany, myMessage) {
-    this.customerId = myGuest.id;
-    this.firstName = myGuest.firstName;
-    this.lastName = myGuest.lastName;
-
-    this.companyId = myCompany.id;
-    this.company = myCompany.company;
-    
-    this.message = myMessage;
-  }
+  
 
   //>> Only returns a greeting based on the time of day
   function findTime() {
@@ -43,6 +39,8 @@ export default function App() {
     }
   }
 
+
+  //------< Rendering Option Lists >-----\\
   function renderCompanyOptions() {
     return Companies.map( (item,i)=> {
       return <option key={i} value={i}>{item.company}</option>
@@ -61,6 +59,19 @@ export default function App() {
     })
   }
 
+  //-----< Methods >-----\\
+
+  //>> Constructor for Message objects, stored in state[] and rendered to DOM
+  function Greeting(myGuest, myCompany, myMessage) {
+    this.customerId = myGuest.id;
+    this.firstName = myGuest.firstName;
+    this.lastName = myGuest.lastName;
+    this.companyId = myCompany.id;
+    this.company = myCompany.company;
+    this.message = myMessage;
+  }
+
+  //>> Generates the message only if a template has been selected
   function generateMessage() {
     if (templateIndex && Templates[templateIndex]) {
       //>> Copy and modify the template
@@ -74,31 +85,37 @@ export default function App() {
           .replace('{{startTimestamp}}', Guests[guest].reservation.startTimestamp)
           .replace('{{endTimestamp}}', Guests[guest].reservation.endTimestamp);
       }
-
       //>> Update company information if a company has been selected
       if (Companies[company]) {
         myMessage = myMessage.replace('{{company}}', Companies[company].company);
       }  
-        
       setMessage(myMessage);
     }
   }
 
+
   function submitGreeting(event) {
     event.preventDefault();
-        
+    
+    //>> Generate and store the greeting
     const newGreeting = new Greeting(Guests[guest], Companies[company], message);
-    console.log(newGreeting);
+    let messageListCopy = [...messageList];
+    messageListCopy.push(newGreeting);
+    setMessageList(messageListCopy);
 
     //>> Clear the inputs
     setGuest('');
     setCompany('');
+    setTemplateIndex('');
     setMessage('');
   }
 
-  function selectTemplate(event) {
-    setTemplateIndex(event.target.value);
+  function renderMessages() {
+    return messageList.map( (item,i)=>{
+      return <MessageItem key={i} message={item}/>
+    })
   }
+
 
   return (
     <div className="App">
@@ -115,17 +132,17 @@ export default function App() {
           {renderGuestOptions()}
         </select>
 
-        <select value={templateIndex} onChange={event=>selectTemplate(event)}>
+        <select value={templateIndex} onChange={event=>setTemplateIndex(event.target.value)}>
           <option disabled value="">Select a Template</option>
           {renderTemplateOptions()}
         </select>
 
-        <textarea value={message} onChange={event=>setMessage(event.target.value)}/>
-
-
-        
+        <textarea value={message} onChange={event=>setMessage(event.target.value)}/>       
         <button>Send Greeting</button>
       </form>
+
+      <h2>Message Board</h2>
+      {renderMessages()}
       
     </div>
   );
