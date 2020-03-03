@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
 //-----< Data Imports >-----\\
@@ -10,8 +10,12 @@ export default function App() {
 
   let [company, setCompany] = useState('');
   let [guest, setGuest] = useState('');
+  let [templateIndex,setTemplateIndex] = useState('');
   let [message, setMessage] = useState('');
-  let [templateIndex,setTemplateIndex] = useState(0);
+
+  useEffect(()=>{
+    generateMessage()
+  },[company, guest, templateIndex]);
 
   //>> Constructor for Message
   function Greeting(myGuest, myCompany, myMessage) {
@@ -51,31 +55,49 @@ export default function App() {
     });
   }
 
-  function generateMessage() {
-    //>> Copy and modify the template
-    let myMessage = Templates[templateIndex].text
-      .replace('{{firstName}}', Guests[guest].firstName)
-      .replace('{{lastName}}', Guests[guest].lastName)
-      .replace('{{company}}', Companies[company].company)
-      .replace('{{roomNumber}}', Guests[guest].reservation.roomNumber)
-      .replace('{{startTimestamp}}', Guests[guest].reservation.startTimestamp)
-      .replace('{{endTimestamp}}', Guests[guest].reservation.endTimestamp)
-      .replace('{{timeGreeting}}',findTime());
-    return myMessage;
+  function renderTemplateOptions() {
+    return Templates.map( (item,i)=>{
+      return <option key={i} value={i}>{item.name}</option>
+    })
   }
 
-  function submitGreeting(event,templateIndex) {
+  function generateMessage() {
+    if (templateIndex && Templates[templateIndex]) {
+      //>> Copy and modify the template
+      let myMessage = Templates[templateIndex].text.replace('{{timeGreeting}}',findTime());
+      //>> Update guest information if a guest has been selected
+      if (Guests[guest]) {
+        myMessage = myMessage
+          .replace('{{firstName}}', Guests[guest].firstName)
+          .replace('{{lastName}}', Guests[guest].lastName)
+          .replace('{{roomNumber}}', Guests[guest].reservation.roomNumber)
+          .replace('{{startTimestamp}}', Guests[guest].reservation.startTimestamp)
+          .replace('{{endTimestamp}}', Guests[guest].reservation.endTimestamp);
+      }
+
+      //>> Update company information if a company has been selected
+      if (Companies[company]) {
+        myMessage = myMessage.replace('{{company}}', Companies[company].company);
+      }  
+        
+      setMessage(myMessage);
+    }
+  }
+
+  function submitGreeting(event) {
     event.preventDefault();
-    
-    
-    
-    const newGreeting = new Greeting(Guests[guest], Companies[company], myMessage);
+        
+    const newGreeting = new Greeting(Guests[guest], Companies[company], message);
     console.log(newGreeting);
 
     //>> Clear the inputs
     setGuest('');
     setCompany('');
     setMessage('');
+  }
+
+  function selectTemplate(event) {
+    setTemplateIndex(event.target.value);
   }
 
   return (
@@ -93,10 +115,18 @@ export default function App() {
           {renderGuestOptions()}
         </select>
 
-        <input value={message} onChange={event=>setMessage(event.target.value)} placeholder="Enjoy your stay!"/>
+        <select value={templateIndex} onChange={event=>selectTemplate(event)}>
+          <option disabled value="">Select a Template</option>
+          {renderTemplateOptions()}
+        </select>
+
+        <textarea value={message} onChange={event=>setMessage(event.target.value)}/>
+
+
         
-        <button>Generate Greeting</button>
+        <button>Send Greeting</button>
       </form>
+      
     </div>
   );
 }

@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Confirm reservation",
-    "text": "Hey, {{firstName}} {{lastName}}, we just met you. And this is crazy. But {{roonNumber}} is your room number. So confirm your reservation maybe?"
+    "text": "Hey, {{firstName}} {{lastName}}, we just met you. And this is crazy. But {{roomNumber}} is your room number. So confirm your reservation maybe?"
   },
   {
     "id": 2,
