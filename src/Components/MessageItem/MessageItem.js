@@ -6,14 +6,21 @@ import Companies from '../../Data/Companies';
 
 const Container = styled.div`
   background-color: white;
-  box-shadow: 0 4px 4px 0 rgba(0,0,0,.5);
+  box-shadow: 0 16px 12px -8px rgba(0,20,30,.5);
   padding: 16px;
   border-radius: 16px;
+  h3 {
+    margin-bottom: 16px;
+  }
+  margin: 16px auto;
 `;
 
 const Header = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: .75em;
+  color: gray;
 `;
 
 export default function MessageItem(props) {
@@ -30,7 +37,7 @@ export default function MessageItem(props) {
         <p>Sent on {date.getFullYear()} at {date.getHours()}:{date.getMinutes()}</p>
       </Header>
       <h3>Message:</h3>
-      <p>{message}</p>
+      <p>"{message}"</p>
     </Container>
   )
 }

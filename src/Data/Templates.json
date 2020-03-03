@@ -12,6 +12,6 @@
   {
     "id": 3,
     "name": "Confirm times",
-    "text": "{{firstName}}, your reservation in room {{roomNumber}} at {{company}} has been confirm for {{startTimestamp}} to {{endTimestamp}}."
+    "text": "{{firstName}}, your reservation in room {{roomNumber}} at {{company}} has been confirmed for {{startTimestamp}} to {{endTimestamp}}."
   }
 ]
