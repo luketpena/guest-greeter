@@ -34,25 +34,39 @@ Created using JavaScript ES6, CSS3, React, and styled-components.
 
 ## Requirements vs Product
 **1. Have some sort of structure or object for working with template messages that have placeholders/variables (i.e. firstName, lastName, roomNumber, etc.) embedded in them**
+
 My template messages have those placeholder built in, and I didn't want to commit anything until the message was submitted. I use objects for saving that information to render or move around or do whatever is needed.
 
+
 **2. Load in message template information from a JSON file that you will have had created. Structure the file however you see fit**
+
 I created the Templates.json file, which uses placeholder words surrounded by double curly braces to denote where a variable will be plugged in.
 
+
 **3. Load in guest and company information from the JSON files that we have provided**
+
 Done by simply importing them into the App.js.
 
+
 **4. Support a greeting variable that will change based on the time of day (e.g. "Good morning" / "Good afternoon" / "Good evening")**
+
 Handled by the 'findTime' function in the App.js. Used in the 'Room ready' template.
 
+
 **5. Allow the user to specify which guest and which company should be used to populate template messages.**
+
 This is required by the form before a message can be submitted.
 
+
 **6. Allow the user to either select one of the message templates that was loaded in from the JSON file or to enter in a new message template**
+
 If a user does not want to use a template, they can just select a guest and company and start typing. If they select a template, the form will be populated by that information, but they can override it by simply typing in additional information or deleting the templated message altogether.
 
+
 **7. Generate a final message output that is a result of populating the specified variables of the message template with the correct values from the other data**
+
 This is done live as you select new options (templates, companies, and guests) but is delivered to the final object upon clicking 'Send Greeting'.
+
 
 ## Future Growth
 The MessageItem component would be the biggest pain point for expansion in addition to the replace methods run on the message when updating. I would want to find some sort of solution that loops through the existing keys and replaces their values only. But I think that finding a better solution to templates would probably solve most of the problems I have with the process as it stands.
