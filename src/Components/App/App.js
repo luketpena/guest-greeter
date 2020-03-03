@@ -12,8 +12,8 @@ import MessageItem from '../MessageItem/MessageItem';
 
 //-----< Styling >-----\\
 const Container = styled.div`
-  background-color: steelblue;
   min-height: 100vh;
+  padding: 64px;
 
   h1,h2 {
     color: white;
@@ -144,6 +144,10 @@ export default function App() {
         let startDate = new Date(Guests[guest].reservation.startTimestamp * 1000);
         let endDate = new Date(Guests[guest].reservation.endTimestamp * 1000);
         
+        /*
+          I know this isn't exactly how templating works in JS, so I would
+          research a more "correct" way to do this in the future.
+        */
         myMessage = myMessage
           .replace('{{firstName}}', Guests[guest].firstName)
           .replace('{{lastName}}', Guests[guest].lastName)
